@@ -10,9 +10,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".FiveXFive"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_five_x_five"
+            android:theme="@style/FullscreenTheme" />
 
-        <service android:enabled="true" android:name=".BackgroundMusic" />
-
+        <service
+            android:name=".BackgroundMusic"
+            android:enabled="true" />
 
         <activity
             android:name=".levels"
@@ -21,11 +27,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

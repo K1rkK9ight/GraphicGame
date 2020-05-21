@@ -59,6 +59,11 @@ class levels : AppCompatActivity() {
         overridePendingTransition(R.anim.alpha,R.anim.beta)
     }
 
+    fun openFiveXFive(view: View) {
+        startActivity(Intent(this, FiveXFive::class.java))
+        overridePendingTransition(R.anim.alpha,R.anim.beta)
+        finish()
+    }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

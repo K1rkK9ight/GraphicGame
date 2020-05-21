@@ -45,6 +45,7 @@
             app:srcCompat="@drawable/firsticon"
             android:background="#dddddd"
             android:clickable="true"
+            android:onClick="openFiveXFive"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.500"

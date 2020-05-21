@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     fun openLevel(view: View) {
         startActivity(Intent(this, levels::class.java))
         overridePendingTransition(R.anim.alpha,R.anim.beta)
+        finish()
     }
 
 
