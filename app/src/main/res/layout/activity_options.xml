@@ -2,11 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/levels"
-    tools:context=".Levels">
+    android:background="@drawable/options"
+    tools:context=".Options">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/frameLayout2"
@@ -19,7 +18,7 @@
             style="?metaButtonBarStyle"
             android:layout_width="411dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="118dp"
+            android:layout_marginStart="120dp"
             android:background="@color/black_overlay"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,58 +28,49 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="@string/_8x8"
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:checked="true"
+            android:text="@string/sound"
+            android:textColor="#241405"
             android:textSize="25sp"
-            android:background="#b197b4"
-            android:onClick="openEightXEight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.500"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.300"
-            android:focusable="true"
-            />
+            app:layout_constraintVertical_bias="0.300" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="@string/_10X10"
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:text="@string/hardmode"
+            android:textColor="#241405"
             android:textSize="25sp"
-            android:background="#b197b4"
-            android:onClick="openTenXTen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.500"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button2"
-            app:layout_constraintVertical_bias="0.150"
-            android:focusable="true" />
+            app:layout_constraintTop_toBottomOf="@+id/switch1"
+            app:layout_constraintVertical_bias="0.200" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:text="@string/back"
+            android:background="#75babf"
             android:textSize="25sp"
-            android:background="#b197b4"
-            android:onClick="wayBack"
+            android:onClick="backToMain"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.500"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3"
-            app:layout_constraintVertical_bias="0.200"
-            android:focusable="true" />
-
+            app:layout_constraintTop_toBottomOf="@+id/switch2"
+            app:layout_constraintVertical_bias="0.400" />
 
     </android.support.constraint.ConstraintLayout>
 

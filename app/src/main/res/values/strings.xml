@@ -4,12 +4,31 @@
     <string name="Options">Options</string>
     <string name="_5X5">5X5</string>
     <string name="_10X10">10X10</string>
-    <string name="back">Back</string>
 
     <string name="title_activity_level">level</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_five_x_five">FiveXFive</string>
+    <string name="score">Score:</string>
+    <string name="restart">restart</string>
+    <string name="cardCount">Size</string>
+    <string name="setting">Setting</string>
+    <string name="set">Set</string>
 
+    <string name="title_activity_options">Options</string>
+    <string name="sound">SOUND</string>
+    <string name="hardmode">HardMode</string>
+    <string name="back">Back</string>
+    <string name="you_win">YOU WIN!</string>
+    <string name="_9">Слов осталось: 9</string>
+    <string name="_8x8">8x8</string>
+
+    <string name="title_activity_ten_x_ten">tenXTen</string>
+
+    <string name="title_activity_tenx_ten">TenxTen</string>
+
+    <string name="title_activity_eightx_eight">EightxEight</string>
+
+    <string name="title_activity_levels">Levels</string>
 </resources>

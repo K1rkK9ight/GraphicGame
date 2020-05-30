@@ -4,12 +4,12 @@ import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
+import android.widget.Switch
 
-
+var player: MediaPlayer? = null
 
 class BackgroundMusic : Service() {
 
-    var player: MediaPlayer? = null
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -17,8 +17,7 @@ class BackgroundMusic : Service() {
 
     override fun onCreate() {
         player = MediaPlayer.create(this, R.raw.first)
-        player!!.seekTo(16000)
-        player!!.isLooping = true // зацикливаем
+        player!!.isLooping = true
     }
 
     override fun onDestroy() {

@@ -2,10 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainlayout"
+    android:id="@+id/levels"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/board2e"
+    android:background="@drawable/main"
     tools:context=".MainActivity">
 
     <android.support.constraint.ConstraintLayout
@@ -32,28 +32,37 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="64dp"
-            android:text="@string/Start"
+            android:layout_width="117dp"
+            android:layout_height="44dp"
+            android:clickable="true"
+            android:background="#eea585"
             android:onClick="openLevel"
+            android:text="@string/Start"
+            android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.500"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.400" />
+            app:layout_constraintVertical_bias="0.400"
+            android:focusable="true" />
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="115dp"
+            android:clickable="true"
+            android:layout_height="44dp"
+            android:background="#eea585"
+            android:onClick="openSettings"
             android:text="@string/Options"
+            android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.500"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button"
-            app:layout_constraintVertical_bias="0.150"/>
+            app:layout_constraintVertical_bias="0.150"
+            android:focusable="true" />
 
     </android.support.constraint.ConstraintLayout>
 

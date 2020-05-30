@@ -11,6 +11,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Levels"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_levels"
+            android:theme="@style/FullscreenTheme"></activity>
+        <activity
+            android:name=".EightxEight"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_eightx_eight"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".TenxTen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_tenx_ten"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".tenXTen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_ten_x_ten"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".Options"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_options"
+            android:theme="@style/FullscreenTheme" />
+        <activity
             android:name=".FiveXFive"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_five_x_five"
