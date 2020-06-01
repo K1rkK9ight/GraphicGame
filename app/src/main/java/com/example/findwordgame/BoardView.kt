@@ -1,6 +1,14 @@
 package com.example.findwordgame
 
+import android.content.Context
+import android.graphics.Color
+import android.support.v7.widget.GridLayout
+import android.widget.TextView
 import kotlin.math.floor
+import com.example.findwordgame.TypesOfFilling.VERTICAL
+import com.example.findwordgame.TypesOfFilling.HORIZONTAL
+import com.example.findwordgame.TypesOfFilling.DIAGONAL
+
 
 lateinit var charBoard: List<CharArray>
 
@@ -10,13 +18,13 @@ class BoardView {
         val grid = charBoard
         val randomRow = (0..7).random()
         val randomCol = (0..7).random()
-        var typeOfFilling = (1..3).random()
+        var typeOfFilling = TypesOfFilling.values().random()
         var indRow = 0
         var indCol = 0
         var recursive = 0
         val lengthRange: IntProgression
         val board= List(characters) { CharArray(characters) }
-        if (typeOfFilling == 1) {
+        if (typeOfFilling == VERTICAL) {
             if (characters - randomRow >= word.length) {
                 for (row in randomRow until characters) {
                     if (indRow < word.length) {
@@ -32,7 +40,7 @@ class BoardView {
                     settingWord(word, char, characters)
                 }
             } else settingWord(word, char, characters)
-        } else if (typeOfFilling == 2) {
+        } else if (typeOfFilling == HORIZONTAL) {
             if (characters - randomCol >= word.length) {
                 for (col in randomCol until characters) {
                     if (indCol < word.length) {
@@ -48,10 +56,10 @@ class BoardView {
                     settingWord(word, char, characters)
                 }
             } else settingWord(word, char, characters)
-        } else if (typeOfFilling == 3) {
+        } else if (typeOfFilling == DIAGONAL) {
             var index  = randomRow
-            typeOfFilling = (1..2).random()
-            if (typeOfFilling == 1) {
+            typeOfFilling = TypesOfFilling.values().filter { it == DIAGONAL }.random()
+            if (typeOfFilling == VERTICAL) {
                 indCol = 0
                 if (characters - randomCol >= word.length && characters - randomRow >= word.length) {
                     for (col in randomCol until characters) {
@@ -106,15 +114,64 @@ class BoardView {
     }
 
     fun characterPadding(dataGridReturn: List<CharArray>, boardSize: Int) {
-        val chars = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+        val chars = ('А'..'Я').toList()
         for (rowChar in 0 until boardSize) {
             for (colChar in 0 until boardSize) {
                 if(dataGridReturn[rowChar][colChar] == ' ') {
                     dataGridReturn[rowChar][colChar] =
-                        chars[floor(Math.random() * chars.length).toInt()]
+                        chars[floor(Math.random() * chars.size).toInt()]
                 }
             }
         }
     }
 
+    fun boardTextView(context: Context, wordList: List<Word>, gridLayouttextView: GridLayout) {
+        for (element in wordList) {
+            val textView = TextView(context)
+            val word = element.wordChar
+            textView.text = word
+            textView.textSize = 15f
+            textView.setPadding(20, 10, 20, 10)
+            gridLayouttextView.setPadding(10, 10, 10, 10)
+            gridLayouttextView.addView(textView)
+        }
+    }
+
+    fun createEmptyBoard(boardSize: Int) {
+        for (rowChar in 0 until boardSize) {
+            for (colChar in 0 until boardSize) {
+                charBoard[rowChar][colChar] = ' '
+            }
+        }
+    }
+
+    fun boardFilling(wordList: List<Word>, boardSize: Int): List<CharArray> {
+        lateinit var dataGridReturn: List<CharArray>
+        for (words in wordList) {
+            val word = words.wordChar
+            val char = words.wordChar.toList()
+            dataGridReturn = BoardView().settingWord(word, char, boardSize)
+        }
+        return dataGridReturn
+    }
+
+    fun textViewElement(checkList: List<String>, context: Context, countList: List<String>,
+                        gridLayouttextView: GridLayout) {
+        for (element in checkList) {
+            val textView1  = TextView(context)
+            if (countList.contains(element)) textView1.setTextColor(
+                Color.rgb(144,116,175))
+            textView1.apply {
+                text = element
+                textSize = 15f
+                setPadding(20, 10, 20, 10) }
+            gridLayouttextView.setPadding(10,10,10,10)
+            gridLayouttextView.addView(textView1)
+        }
+    }
+
+}
+
+enum class TypesOfFilling {
+    VERTICAL, HORIZONTAL, DIAGONAL
 }

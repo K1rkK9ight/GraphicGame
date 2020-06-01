@@ -74,23 +74,23 @@ class BaseOfPossibleWords {
             wordTypedCount = 2
         }
         setWord.filter { it.length > maxLengthWord }
-            while (count < 9) {
-                randomWord = setWord.shuffled().random()
-                val randomStringLength = randomWord.length.toString()
-                val randomLength = randomWord.length
-                for ((keys, values) in map) {
-                    if (keys == randomStringLength && values < wordTypedCount
-                        && randomLength <= maxLengthWord
-                        && length + randomLength in maxLength ) {
-                        count++
-                        result.add(randomWord)
-                        length += randomLength
-                        setWord.remove(randomWord)
-                        val value = map[randomStringLength]!! + 1
-                        map[randomStringLength] = value
-                    }
+        while (count < 9) {
+            randomWord = setWord.shuffled().random()
+            val randomStringLength = randomWord.length.toString()
+            val randomLength = randomWord.length
+            for ((keys, values) in map) {
+                if (keys == randomStringLength && values < wordTypedCount
+                    && randomLength <= maxLengthWord
+                    && length + randomLength in maxLength ) {
+                    count++
+                    result.add(randomWord)
+                    length += randomLength
+                    setWord.remove(randomWord)
+                    val value = map[randomStringLength]!! + 1
+                    map[randomStringLength] = value
                 }
             }
+        }
         return result
     }
 

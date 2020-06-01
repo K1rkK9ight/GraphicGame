@@ -32,6 +32,8 @@ class TenxTen : AppCompatActivity(), View.OnTouchListener, View.OnClickListener 
     private val textViews = mutableListOf<TextView>()
     private val countList = mutableListOf<String>()
     private val boardSize = 10
+    private val checkList = BaseOfPossibleWords().createRandomBoard(boardSize)
+    val wordList = BaseOfPossibleWords().createSupList(checkList)
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View?, event: MotionEvent?): Boolean = false
@@ -42,22 +44,23 @@ class TenxTen : AppCompatActivity(), View.OnTouchListener, View.OnClickListener 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         setContentView(R.layout.activity_tenx_ten)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mVisible = true
-        val checkList = BaseOfPossibleWords().createRandomBoard(boardSize)
-        val wordList = BaseOfPossibleWords().createSupList(checkList)
-        for (element in wordList) {
-            val textView  = TextView(this)
-            val word = element.wordChar
-            textView.text = word
-            textView.textSize = 15f
-            textView.setPadding(20, 10, 20, 10)
-            gridLayouttextView.setPadding(10,10,10,10)
-            gridLayouttextView.addView(textView)
+        if (!hardMode) {
+            for (element in wordList) {
+                val textView = TextView(this)
+                val word = element.wordChar
+                textView.text = word
+                textView.textSize = 15f
+                textView.setPadding(20, 10, 20, 10)
+                gridLayouttextView.setPadding(10, 10, 10, 10)
+                gridLayouttextView.addView(textView)
+            }
         }
-        gridLayout = findViewById<View>(R.id.gridLayout) as GridLayout
+        gridLayout = findViewById(R.id.gridLayout)
         charBoard = List(boardSize) { CharArray(boardSize) }
         for (rowChar in 0 until boardSize) {
             for (colChar in 0 until boardSize) {

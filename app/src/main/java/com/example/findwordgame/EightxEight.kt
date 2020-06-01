@@ -22,9 +22,9 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
         supportActionBar?.show()
         fullscreen_content_controls.visibility = View.VISIBLE
     }
+    lateinit var gridLayout: GridLayout
     private var mVisible: Boolean = false
     private val mHideRunnable = Runnable { hide() }
-    lateinit var gridLayout: GridLayout
     private var statusClick = 0
     private var matrix1 = listOf<String>()
     private var matrix2 = listOf<String>()
@@ -32,13 +32,17 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
     private var row2 = 0
     private var column1 = 0
     private var column2 = 0
+    var left = 9
+    var count = 0
     private val textViews = mutableListOf<TextView>()
     private val countList = mutableListOf<String>()
     private val boardSize = 8
+    private val checkList = BaseOfPossibleWords().createRandomBoard(boardSize)
+    private val wordList = BaseOfPossibleWords().createSupList(checkList)
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean = false
-    override fun onClick(v: View?) { }
+    override fun onTouch(view: View?, event: MotionEvent?): Boolean = false
+    override fun onClick(view: View?) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,39 +54,18 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
         setContentView(R.layout.activity_eightx_eight)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mVisible = true
-        val checkList = BaseOfPossibleWords().createRandomBoard(boardSize)
-        val wordList = BaseOfPossibleWords().createSupList(checkList)
-        for (element in wordList) {
-            val textView = TextView(this)
-            val word = element.wordChar
-            textView.text = word
-            textView.textSize = 15f
-            textView.setPadding(20, 10, 20, 10)
-            gridLayouttextView.setPadding(10, 10, 10, 10)
-            gridLayouttextView.addView(textView)
-        }
-        gridLayout = findViewById<View>(R.id.gridLayout) as GridLayout
+        if (!hardMode) BoardView().boardTextView(this, wordList, gridLayouttextView)
+        gridLayout = findViewById(R.id.gridLayout)
         charBoard = List(boardSize) { CharArray(boardSize) }
-        for (rowChar in 0 until boardSize) {
-            for (colChar in 0 until boardSize) {
-                charBoard[rowChar][colChar] = ' '
-            }
-        }
-        lateinit var dataGridReturn: List<CharArray>
-        for (words in wordList) {
-            val word = words.wordChar
-            val char = words.wordChar.toList()
-            dataGridReturn = BoardView().settingWord(word, char, boardSize)
-        }
+        BoardView().createEmptyBoard(boardSize)
+        val dataGridReturn = BoardView().boardFilling(wordList, boardSize)
         BoardView().characterPadding(dataGridReturn, boardSize)
         boardOutput(dataGridReturn, boardSize, checkList)
     }
 
     @SuppressLint("SetTextI18n")
-    private fun boardOutput(dataGridReturn: List<CharArray>, boardSize: Int, checkList: List<String>) {
+    fun boardOutput(dataGridReturn: List<CharArray>, boardSize: Int, checkList: List<String>) {
         val listChar = mutableListOf<Char>()
-        var count = 0
-        var left = 9
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
                 val textView = TextView(this)
@@ -90,149 +73,150 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
                     GridLayout.spec(GridLayout.UNDEFINED, 1f),
                     GridLayout.spec(GridLayout.UNDEFINED, 1f))
                 listChar.add(dataGridReturn[i][j])
-                textView.text = dataGridReturn[i][j].toString()
-                textView.id = i
-                textView.setBackgroundResource(R.drawable.border)
-                textView.gravity = Gravity.CENTER
-                textView.tag = "$i+$j"
+                textView.apply {
+                    text = dataGridReturn[i][j].toString()
+                    id = i
+                    setBackgroundResource(R.drawable.border)
+                    gravity = Gravity.CENTER
+                    tag = "$i+$j"
+                }
                 textView.setOnClickListener {
-                    if (statusClick == 0) {
-                        val tag = textView.tag.toString()
-                        matrix1 = tag.split("+")
-                        row1 = matrix1[0].toInt()
-                        column1 = matrix1[1].toInt()
-                        statusClick++
-                    } else {
-                        var string = ""
-                        val tag = textView.tag.toString()
-                        matrix2 = tag.split("+")
-                        row2 = matrix2[0].toInt()
-                        column2 = matrix2[1].toInt()
-                        if (matrix1[0] == matrix2[0]) {
-                            for (col in column1..column2) {
-                                for (text in textViews) {
-                                    if (text.tag == "$row1+$col") string += dataGridReturn[row1][col]
-                                }
-                            }
-                            if (checkList.contains(string)) {
-                                countList.add(string)
-                                for (col in column1..column2) {
-                                    for (text in textViews) {
-                                        if (text.tag == "$row1+$col") text.setBackgroundColor(
-                                            Color.rgb(240,139,235))
-                                    }
-                                }
-                                Toast.makeText(this,
-                                    "Слово отгадано <3", Toast.LENGTH_SHORT).show()
-                                left--
-                                WordsLeft.text = "Слов осталось: $left"
-                                count++
-                            } else Toast.makeText(this,
-                                "Неправильно или не заданное слово =(", Toast.LENGTH_SHORT).show()
-                        } else if (matrix1[1] == matrix2[1]) {
-                            for (row in row1..row2) {
-                                for (text in textViews) {
-                                    if (text.tag == "$row+$column2") string += dataGridReturn[row][column2]
-                                }
-                            }
-                            if (checkList.contains(string)) {
-                                countList.add(string)
-                                for (row in row1..row2) {
-                                    for (text in textViews) {
-                                        if (text.tag == ("$row+$column2")) text.setBackgroundColor(
-                                            Color.rgb( 233,151,200))
-                                    }
-                                }
-                                Toast.makeText(this,
-                                    "Так держать!", Toast.LENGTH_SHORT).show()
-                                left--
-                                WordsLeft.text = "Слов осталось: $left"
-                                count++
-                            } else Toast.makeText(this,
-                                "Попробуй еще раз!", Toast.LENGTH_SHORT).show()
-                        } else {
-                            if (row1 < row2) {
-                                var col = column1
-                                for(row in row1..row2) {
-                                    for(text in textViews) {
-                                        if (text.tag == ("$row+$col")) string += dataGridReturn[row][col]
-                                    }
-                                    col++
-                                }
-                                if (checkList.contains(string)) {
-                                    countList.add(string)
-                                    var colum = column1
-                                    for (row in row1..row2) {
-                                        for (text in textViews) {
-                                            if (text.tag == "$row+$colum") text.setBackgroundColor(
-                                                Color.rgb(208,128,217))
-                                        }
-                                        colum++
-                                    }
-                                    Toast.makeText(this,
-                                        "Мое почтение ^.^", Toast.LENGTH_SHORT).show()
-                                    left--
-                                    WordsLeft.text = "Слов осталось: $left"
-                                    count++
-                                } else Toast.makeText(this,
-                                    "Такого нет!", Toast.LENGTH_SHORT).show()
-                            } else {
-                                var column = column1
-                                for (row in row1.downTo(row2)) {
-                                    for(text in textViews){
-                                        if(text.tag == "$row+$column") string += dataGridReturn[row][column]
-                                    }
-                                    column++
-                                }
-                                if (checkList.contains(string)) {
-                                    countList.add(string)
-                                    var column3 = column1
-                                    for (row in row1.downTo(row2)) {
-                                        for (text in textViews) {
-                                            if (text.tag == "$row+$column3") text.setBackgroundColor(
-                                                Color.rgb(228,164,214))
-                                        }
-                                        column3++
-                                    }
-                                    Toast.makeText(this,
-                                        "Это, просто, нечто!", Toast.LENGTH_SHORT).show()
-                                    left--
-                                    WordsLeft.text = "Слов осталось: $left"
-                                    count++
-                                } else Toast.makeText(this,
-                                    "Не-а!", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        if (count == 9) {
-                            WinView.text = "YOU WIN!"
-                            Toast.makeText(this,
-                                "Для начала новой игры нажмите кнопку рестарт!",
-                                Toast.LENGTH_SHORT).show()
-                        }
-                        gridLayouttextView.removeAllViewsInLayout()
-                        for (element in checkList) {
-                            val textView1  = TextView(this)
-                            if (countList.contains(element)) textView1.setTextColor(
-                                Color.rgb(144,116,175))
-                            textView1.text = element
-                            textView1.textSize = 15f
-                            textView1.setPadding(20, 10, 20, 10)
-                            gridLayouttextView.setPadding(10,10,10,10)
-                            gridLayouttextView.addView(textView1)
-                        }
-                        statusClick = 0
-                    }
+                    if (statusClick == 0) statusClickZero(textView)
+                    else statusClickNotZero(textView, dataGridReturn)
                 }
                 textView.textSize = 15f
                 textView.setPadding(20, 10, 20, 10)
                 textViews.add(textView)
-                gridLayout.setPadding(10, 10, 10, 10)
-                gridLayout.addView(textView)
-                gridLayout.columnCount = boardSize
-                gridLayout.rowCount = boardSize
+                gridLayout.apply {
+                    setPadding(10, 10, 10, 10)
+                    gridLayout.addView(textView)
+                    gridLayout.columnCount = boardSize
+                    gridLayout.rowCount = boardSize
+                }
             }
         }
     }
+
+    fun statusClickZero(textView: TextView) {
+        if (statusClick == 0) {
+            val tag = textView.tag.toString()
+            matrix1 = tag.split("+")
+            row1 = matrix1[0].toInt()
+            column1 = matrix1[1].toInt()
+            statusClick++
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun statusClickNotZero(textView: TextView, dataGridReturn: List<CharArray> ) {
+        var string = ""
+        val tag = textView.tag.toString()
+        matrix2 = tag.split("+")
+        row2 = matrix2[0].toInt()
+        column2 = matrix2[1].toInt()
+        if (matrix1[0] == matrix2[0]) {
+            for (col in column1..column2) {
+                for (text in textViews) {
+                    if (text.tag == "$row1+$col") string += dataGridReturn[row1][col]
+                }
+            }
+            if (checkList.contains(string)) {
+                countList.add(string)
+                for (col in column1..column2) {
+                    for (text in textViews) {
+                        if (text.tag == "$row1+$col") text.setBackgroundColor(Color.rgb(240,139,235))
+                    }
+                }
+                Toast.makeText(this, "Слово отгадано <3", Toast.LENGTH_SHORT).show()
+                left--
+                WordsLeft.text = "Слов осталось: $left"
+                count++
+            } else Toast.makeText(this, "Неправильно или не заданное слово =(", Toast.LENGTH_SHORT).show()
+        }
+        else if (matrix1[1] == matrix2[1]) {
+            for (row in row1..row2) {
+                for (text in textViews) {
+                    if (text.tag == "$row+$column2") string += dataGridReturn[row][column2]
+                }
+            }
+            if (checkList.contains(string)) {
+                countList.add(string)
+                for (row in row1..row2) {
+                    for (text in textViews) {
+                        if (text.tag == ("$row+$column2")) text.setBackgroundColor(Color.rgb( 233,151,200))
+                    }
+                }
+                Toast.makeText(this, "Так держать!", Toast.LENGTH_SHORT).show()
+                left--
+                WordsLeft.text = "Слов осталось: $left"
+                count++
+            } else Toast.makeText(this, "Попробуй еще раз!", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            if (row1 < row2) {
+                var col = column1
+                for(row in row1..row2) {
+                    for(text in textViews) {
+                        if (text.tag == ("$row+$col")) string += dataGridReturn[row][col]
+                    }
+                    col++
+                }
+                if (checkList.contains(string)) {
+                    countList.add(string)
+                    var colum = column1
+                    for (row in row1..row2) {
+                        for (text in textViews) {
+                            if (text.tag == "$row+$colum") text.setBackgroundColor(Color.rgb(208,128,217))
+                        }
+                        colum++
+                    }
+                    Toast.makeText(this, "Мое почтение ^.^", Toast.LENGTH_SHORT).show()
+                    left--
+                    WordsLeft.text = "Слов осталось: $left"
+                    count++
+                } else Toast.makeText(this, "Такого нет!", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                var column = column1
+                for (row in row1.downTo(row2)) {
+                    for(text in textViews){
+                        if(text.tag == "$row+$column") string += dataGridReturn[row][column]
+                    }
+                    column++
+                }
+                if (checkList.contains(string)) {
+                    countList.add(string)
+                    var column3 = column1
+                    for (row in row1.downTo(row2)) {
+                        for (text in textViews) {
+                            if (text.tag == "$row+$column3") text.setBackgroundColor(
+                                Color.rgb(228,164,214))
+                        }
+                        column3++
+                    }
+                    Toast.makeText(this, "Это, просто, нечто!", Toast.LENGTH_SHORT).show()
+                    left--
+                    WordsLeft.text = "Слов осталось: $left"
+                    count++
+                } else Toast.makeText(this, "Не-а!", Toast.LENGTH_SHORT).show()
+            }
+        }
+        winControl(count)
+        gridLayouttextView.removeAllViewsInLayout()
+       BoardView().textViewElement(checkList, this, countList, gridLayouttextView)
+        statusClick = 0
+    }
+
+
+
+    @SuppressLint("SetTextI18n")
+    fun winControl(count: Int) {
+        if (count == 9) {
+            WinView.text = "YOU WIN!"
+            Toast.makeText(this, "Для начала новой игры нажмите кнопку рестарт!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     fun backToLevels(view: View) {
         startActivity(Intent(this, Levels::class.java))
