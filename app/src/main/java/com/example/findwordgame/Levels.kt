@@ -9,6 +9,7 @@ import android.view.Window
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.activity_levels.*
 
+var boardSize = 0
 
 class Levels : AppCompatActivity() {
 
@@ -39,12 +40,14 @@ class Levels : AppCompatActivity() {
     fun openEightXEight(view: View) {
         startActivity(Intent(this, EightxEight::class.java))
         overridePendingTransition(R.anim.alpha,R.anim.beta)
+        boardSize = 8
         finish()
     }
 
     fun openTenXTen(view: View) {
-        startActivity(Intent(this, TenxTen::class.java))
+        startActivity(Intent(this, EightxEight::class.java))
         overridePendingTransition(R.anim.alpha,R.anim.beta)
+        boardSize = 10
         finish()
     }
 

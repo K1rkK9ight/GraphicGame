@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:background="@drawable/eight_x_eigth"/>
+        android:background="@drawable/ten_x_ten"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="60dp"
-                android:background="@color/subPanel"
+                android:background="#387ea2"
                 grid:columnCount="3"
                 grid:layout_constraintBottom_toBottomOf="parent"
                 grid:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text=""
-                android:textColor="#000000"
+                android:textColor="#f18180"
                 android:textSize="50sp"
                 grid:layout_constraintBottom_toTopOf="@+id/gridLayouttextView"
                 grid:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +104,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:text="@string/_9"
-                android:textColor="#000000"
+                android:textColor="#f5cecf"
                 android:textSize="30sp"
                 grid:layout_constraintBottom_toTopOf="@+id/gridLayouttextView"
                 grid:layout_constraintEnd_toEndOf="parent"

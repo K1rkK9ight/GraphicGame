@@ -1,6 +1,7 @@
 package com.example.findwordgame
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
@@ -11,9 +12,9 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_eightx_eight.fullscreen_content_controls
-import kotlinx.android.synthetic.main.activity_tenx_ten.WinView
-import kotlinx.android.synthetic.main.activity_tenx_ten.WordsLeft
-import kotlinx.android.synthetic.main.activity_tenx_ten.gridLayouttextView
+import kotlinx.android.synthetic.main.activity_eightx_eight.WinView
+import kotlinx.android.synthetic.main.activity_eightx_eight.WordsLeft
+import kotlinx.android.synthetic.main.activity_eightx_eight.gridLayouttextView
 
 class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListener {
 
@@ -32,17 +33,18 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
     private var row2 = 0
     private var column1 = 0
     private var column2 = 0
-    var left = 9
-    var count = 0
+    private var left = 9
+    private var count = 0
     private val textViews = mutableListOf<TextView>()
     private val countList = mutableListOf<String>()
-    private val boardSize = 8
     private val checkList = BaseOfPossibleWords().createRandomBoard(boardSize)
     private val wordList = BaseOfPossibleWords().createSupList(checkList)
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View?, event: MotionEvent?): Boolean = false
     override fun onClick(view: View?) { }
+
+    val color = Color.alpha(100)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +57,12 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mVisible = true
         if (!hardMode) BoardView().boardTextView(this, wordList, gridLayouttextView)
+        else gridLayouttextView.setBackgroundColor(color)
         gridLayout = findViewById(R.id.gridLayout)
         charBoard = List(boardSize) { CharArray(boardSize) }
-        BoardView().createEmptyBoard(boardSize)
-        val dataGridReturn = BoardView().boardFilling(wordList, boardSize)
-        BoardView().characterPadding(dataGridReturn, boardSize)
+        CreateBoard().createEmptyBoard(boardSize)
+        val dataGridReturn = CreateBoard().boardFilling(wordList, boardSize)
+        CreateBoard().characterPadding(dataGridReturn, boardSize)
         boardOutput(dataGridReturn, boardSize, checkList)
     }
 
@@ -97,7 +100,7 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
         }
     }
 
-    fun statusClickZero(textView: TextView) {
+    private fun statusClickZero(textView: TextView) {
         if (statusClick == 0) {
             val tag = textView.tag.toString()
             matrix1 = tag.split("+")
@@ -127,11 +130,11 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
                         if (text.tag == "$row1+$col") text.setBackgroundColor(Color.rgb(240,139,235))
                     }
                 }
-                Toast.makeText(this, "Слово отгадано <3", Toast.LENGTH_SHORT).show()
+                BoardView().toastMakeGoodText(this)
                 left--
-                WordsLeft.text = "Слов осталось: $left"
+                wordsLeft(left)
                 count++
-            } else Toast.makeText(this, "Неправильно или не заданное слово =(", Toast.LENGTH_SHORT).show()
+            } else BoardView().toastMakeBadText(this)
         }
         else if (matrix1[1] == matrix2[1]) {
             for (row in row1..row2) {
@@ -146,11 +149,11 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
                         if (text.tag == ("$row+$column2")) text.setBackgroundColor(Color.rgb( 233,151,200))
                     }
                 }
-                Toast.makeText(this, "Так держать!", Toast.LENGTH_SHORT).show()
+                BoardView().toastMakeGoodText(this)
                 left--
-                WordsLeft.text = "Слов осталось: $left"
+                wordsLeft(left)
                 count++
-            } else Toast.makeText(this, "Попробуй еще раз!", Toast.LENGTH_SHORT).show()
+            } else BoardView().toastMakeBadText(this)
         }
         else {
             if (row1 < row2) {
@@ -170,11 +173,11 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
                         }
                         colum++
                     }
-                    Toast.makeText(this, "Мое почтение ^.^", Toast.LENGTH_SHORT).show()
+                    BoardView().toastMakeGoodText(this)
                     left--
-                    WordsLeft.text = "Слов осталось: $left"
+                    wordsLeft(left)
                     count++
-                } else Toast.makeText(this, "Такого нет!", Toast.LENGTH_SHORT).show()
+                } else BoardView().toastMakeBadText(this)
             }
             else {
                 var column = column1
@@ -194,29 +197,31 @@ class EightxEight : AppCompatActivity(), View.OnTouchListener, View.OnClickListe
                         }
                         column3++
                     }
-                    Toast.makeText(this, "Это, просто, нечто!", Toast.LENGTH_SHORT).show()
+                    BoardView().toastMakeGoodText(this)
                     left--
-                    WordsLeft.text = "Слов осталось: $left"
+                    wordsLeft(left)
                     count++
-                } else Toast.makeText(this, "Не-а!", Toast.LENGTH_SHORT).show()
+                } else BoardView().toastMakeBadText(this)
             }
         }
-        winControl(count)
+        winControl(count, this)
         gridLayouttextView.removeAllViewsInLayout()
-       BoardView().textViewElement(checkList, this, countList, gridLayouttextView)
+        BoardView().textViewElement(checkList, this, countList, gridLayouttextView)
         statusClick = 0
     }
 
-
-
     @SuppressLint("SetTextI18n")
-    fun winControl(count: Int) {
+    fun winControl(count: Int, context: Context) {
         if (count == 9) {
             WinView.text = "YOU WIN!"
-            Toast.makeText(this, "Для начала новой игры нажмите кнопку рестарт!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Для начала новой игры нажмите кнопку рестарт!", Toast.LENGTH_SHORT).show()
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    fun wordsLeft(left: Int) {
+        WordsLeft.text = "Слов осталось: $left"
+    }
 
     fun backToLevels(view: View) {
         startActivity(Intent(this, Levels::class.java))
