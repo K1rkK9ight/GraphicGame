@@ -6,8 +6,7 @@ import android.graphics.Color
 import android.support.v7.widget.GridLayout
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_eightx_eight.WordsLeft
-import kotlinx.android.synthetic.main.activity_eightx_eight.WinView
+import kotlinx.android.synthetic.main.activity_eightx_eight.*
 
 
 class BoardView {
@@ -28,6 +27,7 @@ class BoardView {
 
     fun textViewElement(checkList: List<String>, context: Context,
                         countList: List<String>, gridLayoutTextView: GridLayout) {
+        gridLayoutTextView.removeAllViewsInLayout()
         for (element in checkList) {
             val textView1  = TextView(context)
             if (countList.contains(element)) textView1.setTextColor(

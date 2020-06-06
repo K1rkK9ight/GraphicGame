@@ -1,7 +1,6 @@
 package com.example.findwordgame
 
 import kotlin.math.floor
-import kotlin.math.floor
 import com.example.findwordgame.TypesOfFilling.VERTICAL
 import com.example.findwordgame.TypesOfFilling.HORIZONTAL
 import com.example.findwordgame.TypesOfFilling.DIAGONAL
